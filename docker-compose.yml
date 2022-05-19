@@ -1,0 +1,32 @@
+version: "2"
+
+services:
+  apigility:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+     - "8080:80"
+    links:
+     - database:database
+    volumes:
+     - .:/var/www
+  database:
+     image: mysql
+     ports:
+      - 3306:3306
+     command: --default-authentication-plugin=mysql_native_password
+     restart: always
+     volumes:
+      - ./.data/db:/var/lib/mysql
+      - ./.docker/mysql/:/docker-enterypoint-initdb.d/
+     environment:
+      - MYSQL_ROOT_PASSWORD=example
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      ports:
+      - 8081:80
+      environment:
+      - PMA_HOST=database
+
+
