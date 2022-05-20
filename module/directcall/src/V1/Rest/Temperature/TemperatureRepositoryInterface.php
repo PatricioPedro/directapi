@@ -11,24 +11,9 @@ interface TemperatureRepositoryInterface
      *
      * @return Temperature[]
      */
-    public function findAllTemperature();
+    public function findAllTemperature($params);
 
-    /**
-     * Return a single temperature.
-     *
-     * @param  int $id Identifier of the post to return.
-     * @return Temperature
-     */
-    public function deleteTemperature($id);
-
-        /**
-     * Return a single temperature.
-     *
-     * @param  int $id Identifier of the post to return.
-     * @return Temperature
-     */
-    public function findTemperature($id);
-
+  
     /**
      * Return a single temperature.
      *
@@ -36,20 +21,13 @@ interface TemperatureRepositoryInterface
      */
     public function createTemperature($data);
 
-    /**
-     * Return a single temperature.
-     *
-     * @param  int $id Identifier of the post to return.
-     * @return Temperature
-     */
-    public function updateTemperature($data);
 
-    /**
-     * Return a single temperature.
+     /**
+     * Return a single Temperature.
      *
      * @param  int $id Identifier of the post to return.
      * @return Temperature
      */
-    public function getByUFtemperature($data);
+    public function deleteTemperature($id);
 
 }

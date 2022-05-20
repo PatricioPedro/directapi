@@ -1,34 +1,39 @@
 <?php
+
 namespace directcall\V1\Rest\Provider;
 
-use mysqlAdapter ;
-
-
 use Laminas\ApiTools\ApiProblem\ApiProblem;
-use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
-use Interop\Container\ContainerInterface;
-use directCall\Controller\ProviderController;
-use directcall\Model\Table\ProviderTable;
+use Laminas\Crypt\Password\Bcrypt;
+
+// use directcall\V1\Rest\User;
 
 class ProviderResource extends AbstractResourceListener
 {
+
+    private $providerRepository;
+
+    public function __construct()
+    {
+        $this->providerRepository =  new ProviderRepository();
+    }
     /**
      * Create a resource
      *
      * @param  mixed $data
      * @return ApiProblem|mixed
      */
-    private $controller;
-
-    public function __construct()
-    {
-        $this->controller = new ProviderController(new ProviderTable());
-    }
-
     public function create($data)
     {
-        return new ApiProblem(405, "Oi");
+
+        try {
+
+
+            $result = $this->providerRepository->createProvider($data);
+            return ["response" => $result];
+        } catch (\Throwable $th) {
+            return ["response" => $th];
+        }
     }
 
     /**
@@ -39,7 +44,12 @@ class ProviderResource extends AbstractResourceListener
      */
     public function delete($id)
     {
-        return new ApiProblem(405, 'deleta uma instancia');
+        try {
+            $data = $this->providerRepository->deleteProvider($id);
+            return ["response" => $data];
+        } catch (\Throwable $th) {
+            return ["response" => $th];
+        }
     }
 
     /**
@@ -50,7 +60,7 @@ class ProviderResource extends AbstractResourceListener
      */
     public function deleteList($data)
     {
-        return new ApiProblem(405, 'deleta uma lista');
+        return new ApiProblem(405, 'The DELETE method has not been defined for collections');
     }
 
     /**
@@ -61,7 +71,12 @@ class ProviderResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        return new ApiProblem(405, 'pega por ID');
+        try {
+            $data = $this->providerRepository->findProvider($id);
+            return ["response" => $data];
+        } catch (\Throwable $th) {
+            return ["response" => $th];
+        }
     }
 
     /**
@@ -72,9 +87,13 @@ class ProviderResource extends AbstractResourceListener
      */
     public function fetchAll($params = [])
     {
-        $data = $this-> controller -> createAction();
-       
-        return  $data;
+        try {
+
+            $data = $this->providerRepository->findAllProvider();
+            return ["response" => $data];
+        } catch (\Throwable $th) {
+            return ["response" => $th];
+        }
     }
 
     /**
@@ -120,6 +139,11 @@ class ProviderResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
-        return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
+        try {
+            $data = $this->providerRepository->updateProvider($id, $data);
+            return ["response" => $data];
+        } catch (\Throwable $th) {
+            return ["response" => $th];
+        }
     }
 }

@@ -7,6 +7,14 @@ use directcall\V1\Rest\Temperature;
 
 class TemperatureResource extends AbstractResourceListener
 {
+
+    private $temperatureRepository;
+
+    public function __construct()
+    {
+        $this->temperatureRepository =  new TemperatureRepository();
+    }
+
     /**
      * Create a resource
      *
@@ -15,7 +23,13 @@ class TemperatureResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return new ApiProblem(405, 'The POST method has not been defined');
+
+        try {
+            $result = $this->temperatureRepository->createTemperature($data);
+            return ["response" => $result];
+        } catch (\Throwable $th) {
+            return ["response" => $th];
+        }
     }
 
     /**
@@ -26,7 +40,12 @@ class TemperatureResource extends AbstractResourceListener
      */
     public function delete($id)
     {
-        return new ApiProblem(405, 'The DELETE method has not been defined for individual resources');
+        try {
+           $this->temperatureRepository->deleteTemperature($id);
+            return true;
+        } catch (\Throwable $th) {
+            return ["response" => $th];
+        }
     }
 
     /**
@@ -59,11 +78,32 @@ class TemperatureResource extends AbstractResourceListener
      */
     public function fetchAll($params = [])
     {
-        $model = new TemperatureRepository();
+        try {
+            $todayIs = date("Y/m/d");
 
-        $data = $model -> test();
+            $requestDate = new \DateTime($params["date"]);
+            $currentDate = new \DateTime($todayIs);
 
-        return ["params" => $data];
+            if ($requestDate < $currentDate) {
+                return ["response" => "Não é permitido buscar dados no passado"];
+            } else {
+                if ($requestDate != $currentDate) {
+                    $difference = date_diff(
+                        date_create($params["date"]),  
+                        date_create($todayIs)
+                    )->format('%a');
+
+                   if ($difference > 10) {
+                      return ["response" => "Não pode buscar temperatura para dias muito no futuro, o limite é de 10 dias no futuro"];
+                   }
+                }
+            }
+
+            $data = $this->temperatureRepository->findAllTemperature($params);
+            return ["response" => $data];
+        } catch (\Throwable $th) {
+            return ["response" => $th];
+        }
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace directcall\V1\Rest\Temperature;
 
 class Database
@@ -9,14 +10,25 @@ class Database
     private $db_user = "root";
     private $db_pwd = "example";
 
-    public function connectDb()
+    private $conn;
+
+    public function __construct()
+    {
+        $this -> connectDb();
+    }
+
+    private function connectDb()
     {
         try {
-            $conn = new \PDO('mysql:host=' . $this->db_host . ";dbname=" . $this->db_name, $this->db_user, $this->db_pwd);
-            $conn -> setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            return $conn;
+            $this-> conn  = new \PDO('mysql:host=' . $this->db_host . ";dbname=" . $this->db_name, $this->db_user, $this->db_pwd);
+            $this-> conn  -> setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
+            $this-> conn = null;
             throw $e;
         }
+    }
+
+    public function getConnection () {
+        return $this -> conn;        
     }
 }
