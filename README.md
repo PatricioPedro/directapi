@@ -5,6 +5,7 @@ certo dia, e a resposta será a temperatura do dia procurado e dos próximos 10 
 
 # Clone do projeto
 
+<p>
 $ git clone https://github.com/PatricioPedro/directapi.git
 $ gitcheckout api
 
@@ -13,9 +14,10 @@ $ gitcheckout api
 $ docker-compose up -d --build
 $ docker-compose run apigility composer update
 
-# Iniciar o app
 
-$docker-compose up
+# Iniciar o app
+$ ./vendor/bin/laminas-development-mode enable
+$ docker-compose up
 
 ### Painel Admin Laminas UI
 - http://localhost:8080
@@ -111,3 +113,4 @@ MySQL
 oauth2
 Docker
 Composer
+<p/>
