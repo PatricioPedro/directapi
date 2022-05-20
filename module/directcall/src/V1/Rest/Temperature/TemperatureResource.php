@@ -3,16 +3,16 @@ namespace directcall\V1\Rest\Temperature;
 
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
-use directcall\V1\Rest\Temperature;
+use directcall\V1\Rest\Temperature\Repository\TemperatureRepositoryInterface;
 
 class TemperatureResource extends AbstractResourceListener
 {
 
     private $temperatureRepository;
 
-    public function __construct()
+    public function __construct(TemperatureRepositoryInterface $temperatureRepository)
     {
-        $this->temperatureRepository =  new TemperatureRepository();
+        $this->temperatureRepository =  $temperatureRepository;
     }
 
     /**

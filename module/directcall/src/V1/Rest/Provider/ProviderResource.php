@@ -4,7 +4,8 @@ namespace directcall\V1\Rest\Provider;
 
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
-use Laminas\Crypt\Password\Bcrypt;
+
+use directcall\V1\Rest\Provider\Repository\ProviderRepositoryInterface;
 
 // use directcall\V1\Rest\User;
 
@@ -13,9 +14,9 @@ class ProviderResource extends AbstractResourceListener
 
     private $providerRepository;
 
-    public function __construct()
+    public function __construct(ProviderRepositoryInterface $providerRepository)
     {
-        $this->providerRepository =  new ProviderRepository();
+        $this->providerRepository = $providerRepository;
     }
     /**
      * Create a resource
@@ -27,8 +28,6 @@ class ProviderResource extends AbstractResourceListener
     {
 
         try {
-
-
             $result = $this->providerRepository->createProvider($data);
             return ["response" => $result];
         } catch (\Throwable $th) {

@@ -1,39 +1,35 @@
 <?php
 namespace directcall\V1\Rest\User;
-
+use  directcall\V1\Rest\User\Repository\UserRepositoryInterface;
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
-use Laminas\Crypt\Password\Bcrypt;
+use directcall\V1\Rest\Utils\Crypto;
 
 class UserResource extends AbstractResourceListener
 {
-    /**
+   
+
+
+    private $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository =  $userRepository;
+    }
+
+ /**
      * Create a resource
      *
      * @param  mixed $data
      * @return ApiProblem|mixed
      */
-
-
-    private $userRepository;
-
-    public function __construct()
-    {
-        $this->userRepository =  new UserRepository();
-    }
-
-
-    private function hashPassword($pwd) {
-        $bcrypt = new Bcrypt();
-        $securePass = $bcrypt->create($pwd);
-
-        return $securePass;
-    }
-
     public function create($data)
     {
         try {
-            $data ->password = $this -> hashPassword($data ->password);
+            
+            $crypto = new Crypto();
+
+            $data ->password =  $crypto -> hashPassword($data ->password);
 
             $result = $this->userRepository->createUser($data, "client");
             return ["response" => $result];
