@@ -10,7 +10,8 @@ $ gitcheckout api
 
 ## Instalação das dependências
 
-$ docker run apigility composer install 
+$ docker-compose up -d --build
+$ docker-compose run apigility composer update
 
 # Iniciar o app
 

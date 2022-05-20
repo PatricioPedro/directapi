@@ -28,6 +28,7 @@ return [
     'Laminas\\ApiTools\\Rpc',
     'Laminas\\ApiTools\\Versioning',
     'StatusLib',
+    'Laminas\ZendFrameworkBridge',
     'Application',
     'directcall',
 ];
